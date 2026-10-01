@@ -1,1 +1,5 @@
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android" android:layout_width="match_parent" android:layout_height="wrap_content" android:layout_marginBottom="12dp" android:background="@drawable/card" android:orientation="vertical" android:focusable="true" android:clickable="true" android:foreground="?attr/selectableItemBackground" android:minHeight="88dp"><TextView android:id="@+id/title" style="@style/Section" android:layout_marginTop="0dp" android:layout_marginBottom="6dp"/><TextView android:id="@+id/subtitle" style="@style/Body" android:layout_marginBottom="0dp"/></LinearLayout>
+<?xml version="1.0" ?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android" android:layout_width="match_parent" android:layout_height="wrap_content" android:layout_marginBottom="12dp" android:background="@drawable/card" android:orientation="vertical" android:focusable="true" android:clickable="true" android:foreground="?attr/selectableItemBackground" android:minHeight="88dp">
+    <TextView android:id="@+id/title" style="@style/Section" android:layout_marginTop="0dp" android:layout_marginBottom="6dp"/>
+    <TextView android:id="@+id/subtitle" style="@style/Body" android:layout_marginBottom="0dp"/>
+</LinearLayout>

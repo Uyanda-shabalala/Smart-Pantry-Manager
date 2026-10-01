@@ -1,1 +1,11 @@
-<ScrollView xmlns:android="http://schemas.android.com/apk/res/android" android:layout_width="match_parent" android:layout_height="match_parent" android:fillViewport="true"><LinearLayout xmlns:android="http://schemas.android.com/apk/res/android" android:layout_width="match_parent" android:layout_height="match_parent" android:orientation="vertical" android:padding="24dp"><TextView android:id="@+id/recipeTitle" style="@style/Title"/><TextView style="@style/Body" android:text="@string/detail_note" /><TextView style="@style/Section" android:text="@string/ingredients" /><TextView android:id="@+id/ingredients" style="@style/Body" android:background="@drawable/card"/><TextView style="@style/Section" android:text="@string/method" /><TextView android:id="@+id/method" style="@style/Body" android:lineSpacingExtra="8dp"/></LinearLayout></ScrollView>
+<?xml version="1.0" ?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android" android:layout_width="match_parent" android:layout_height="match_parent" android:fillViewport="true">
+    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android" android:layout_width="match_parent" android:layout_height="match_parent" android:orientation="vertical" android:padding="24dp">
+        <TextView android:id="@+id/recipeTitle" style="@style/Title"/>
+        <TextView style="@style/Body" android:text="@string/detail_note"/>
+        <TextView style="@style/Section" android:text="@string/ingredients"/>
+        <TextView android:id="@+id/ingredients" style="@style/Body" android:background="@drawable/card"/>
+        <TextView style="@style/Section" android:text="@string/method"/>
+        <TextView android:id="@+id/method" style="@style/Body" android:lineSpacingExtra="8dp"/>
+    </LinearLayout>
+</ScrollView>
