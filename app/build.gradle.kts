@@ -32,6 +32,7 @@ android {
 }
 
 dependencies {
+    implementation("androidx.recyclerview:recyclerview:1.2.1")
     implementation(libs.appcompat)
     implementation(libs.material)
     testImplementation(libs.junit)
