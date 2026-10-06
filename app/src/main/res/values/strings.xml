@@ -1,4 +1,4 @@
-<?xml version="1.0" ?>
+<?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="app_name">Smart Pantry</string>
     <string name="demo">UI preview • Changes last for this session only</string>
@@ -11,26 +11,26 @@
     <string name="name">Ingredient name</string>
     <string name="quantity">Quantity</string>
     <string name="unit">Unit</string>
-    <string name="expiry">Expiry date (optional)</string>
-    <string name="expiry_hint">YYYY-MM-DD</string>
+    <string name="expiry">Expiry date</string>
+    <string name="expiry_hint">Optional</string>
     <string name="empty">Your pantry is ready for a fresh start. Add your first ingredient.</string>
     <string name="recipe_note">Sample recipe previews only. Pantry matching is not connected yet.</string>
     <string name="no_matches">No recipes match your pantry yet — add more ingredients.</string>
     <string name="sample_toggle">Show sample recipe previews</string>
-    <string name="alerts">Expiring-soon alerts (preview)</string>
-    <string name="settings_note">These controls demonstrate the settings UI. Alerts are not scheduled and preferences reset when the process ends.</string>
+    <string name="alerts">Expiry reminders</string>
+    <string name="settings_note">These controls demonstrate the settings UI. Preferences reset when the process ends.</string>
     <string name="settings_title">Make it yours</string>
     <string name="settings_subtitle">Small habits. Less food waste.</string>
-    <string name="pantry_subtitle">Keep track of what you have. Make the most of it.</string>
-    <string name="recipe_title">A little kitchen inspiration</string>
-    <string name="recipe_subtitle">Simple ideas for your next meal.</string>
+    <string name="pantry_subtitle">Good food starts with what you have.</string>
+    <string name="recipe_title">Cook with what you have</string>
+    <string name="recipe_subtitle">Every ingredient. Enough to cook.</string>
     <string name="back">Back</string>
     <string name="edit_title">Edit ingredient</string>
-    <string name="add_title">Something fresh?</string>
-    <string name="form_note">Add the name, amount and unit you have at home.</string>
+    <string name="add_title">Add ingredient</string>
+    <string name="form_note">A little less waste starts here.</string>
     <string name="detail_note">Sample recipe • Not checked against your pantry</string>
-    <string name="ingredients">What you’ll need</string>
-    <string name="method">Let’s make it</string>
+    <string name="ingredients">Ingredients</string>
+    <string name="method">Method</string>
     <string name="cancel">Cancel</string>
     <string name="delete_title">Remove this ingredient?</string>
     <string name="delete_message">This removes the item from this preview session.</string>
@@ -41,15 +41,28 @@
     <string name="missing_item">This preview item is no longer available</string>
     <string name="count">%1$d ingredients in your pantry</string>
     <string name="edit_accessibility">Edit %1$s</string>
-    <string name="units_label">Preferred display units (preview)</string>
+    <string name="units_label">Preferred units</string>
     <string name="empty_preview">Empty-state preview — matching is not connected</string>
-    <string name="brand">SMART PANTRY / LESS WASTE, MORE POSSIBILITY</string>
+    <string name="brand">Less waste. More possibility.</string>
+    <string name="search_hint">Search ingredients</string>
+    <string name="chip_all">All</string>
+    <string name="chip_use_soon">Use soon</string>
+    <string name="chip_vegetables">Vegetables</string>
+    <string name="banner_use_soon">2 ingredients to use soon</string>
+    <string name="add_ingredient_btn">+ Add item to pantry</string>
+    <string name="all_ingredients_available">✓ All ingredients available</string>
+    <string name="settings_kitchen_title">My kitchen</string>
+    <string name="settings_kitchen_subtitle">A more intentional kitchen.</string>
+    <string name="settings_remind_before">Remind me before</string>
+    <string name="settings_remind_value">2 days</string>
+    <string name="settings_account">Account</string>
+    <string name="settings_about">About Smart Pantry</string>
     <string-array name="units">
+        <item>pcs</item>
         <item>g</item>
         <item>kg</item>
         <item>ml</item>
         <item>L</item>
-        <item>pcs</item>
     </string-array>
     <string-array name="preferences">
         <item>Metric</item>

@@ -1,33 +1,38 @@
-<?xml version="1.0" ?>
+<?xml version="1.0" encoding="utf-8"?>
 <resources>
     <style name="Theme.SmartPantryManager" parent="Theme.MaterialComponents.Light.NoActionBar">
-        <item name="colorPrimary">@color/sage</item>
-        <item name="colorPrimaryVariant">@color/sage</item>
+        <item name="colorPrimary">@color/sage_dark</item>
+        <item name="colorPrimaryVariant">@color/sage_dark</item>
         <item name="colorOnPrimary">@color/white</item>
-        <item name="colorSecondary">@color/sage</item>
+        <item name="colorSecondary">@color/sage_dark</item>
         <item name="android:windowBackground">@color/cream</item>
-        <item name="android:fontFamily">sans</item>
-        <item name="android:colorAccent">@color/sage</item>
+        <item name="android:fontFamily">sans-serif</item>
+        <item name="android:colorAccent">@color/sage_dark</item>
         <item name="android:windowLightStatusBar">true</item>
-        <item name="android:navigationBarColor">@color/cream</item>
+        <item name="android:navigationBarColor">@color/white</item>
         <item name="android:textColorPrimary">@color/ink</item>
     </style>
+
     <style name="Body">
         <item name="android:layout_width">match_parent</item>
         <item name="android:layout_height">wrap_content</item>
-        <item name="android:textSize">16sp</item>
+        <item name="android:textSize">15sp</item>
         <item name="android:textColor">@color/muted</item>
-        <item name="android:layout_marginBottom">16dp</item>
+        <item name="android:layout_marginBottom">12dp</item>
     </style>
+
     <style name="Title" parent="Body">
-        <item name="android:textSize">30sp</item>
+        <item name="android:textSize">28sp</item>
         <item name="android:textColor">@color/ink</item>
         <item name="android:textStyle">bold</item>
+        <item name="android:layout_marginBottom">4dp</item>
     </style>
+
     <style name="Section" parent="Body">
-        <item name="android:textSize">20sp</item>
+        <item name="android:textSize">18sp</item>
         <item name="android:textColor">@color/ink</item>
         <item name="android:textStyle">bold</item>
         <item name="android:layout_marginTop">16dp</item>
+        <item name="android:layout_marginBottom">8dp</item>
     </style>
 </resources>
