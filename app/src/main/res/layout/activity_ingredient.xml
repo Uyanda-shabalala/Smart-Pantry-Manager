@@ -187,6 +187,15 @@
                 style="@style/Widget.MaterialComponents.Button.TextButton"
                 android:layout_width="match_parent"
                 android:layout_height="50dp"
+                android:visibility="gone"
+                android:text="@string/delete"
+                android:textAllCaps="false" />
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/cancel"
+                style="@style/Widget.MaterialComponents.Button.TextButton"
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
                 android:text="@string/cancel"
                 android:textAllCaps="false"
                 android:textColor="@color/ink"

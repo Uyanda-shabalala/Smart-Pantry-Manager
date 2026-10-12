@@ -1,7 +1,13 @@
 package com.example.smartpantrymanager;
 import java.util.ArrayList;
 import java.util.List;
-/** UI milestone only: process-local sample data, deliberately not persistence. */
+/*PreviewStore is a data storage class , It holds:
+
+• Ingredients and their quantities, units, and expiry dates.
+  • The alerts setting and preferred units.
+  • Methods to find and add ingredients.
+  */
+
 public final class PreviewStore {
     public static final class Ingredient {
         public final long id;
@@ -19,7 +25,7 @@ public final class PreviewStore {
     private static long nextId=4;
     public static boolean alerts=false;
     public static int unitsPreference=0;
-    static {
+    static {// dummy data
         items.add(new Ingredient(1,"Tomatoes",4,"pcs",""));
         items.add(new Ingredient(2,"Pasta",500,"g",""));
         items.add(new Ingredient(3,"Olive oil",250,"ml",""));

@@ -153,7 +153,7 @@
             android:nestedScrollingEnabled="false" />
 
         <com.google.android.material.button.MaterialButton
-            android:id="@+id/add"
+            android:id="@+id/addItem"
             android:layout_width="match_parent"
             android:layout_height="56dp"
             android:layout_marginTop="12dp"
