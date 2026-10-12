@@ -33,12 +33,14 @@
     <string name="method">Method</string>
     <string name="cancel">Cancel</string>
     <string name="delete_title">Remove this ingredient?</string>
-    <string name="delete_message">This removes the item from this preview session.</string>
+    <string name="delete_message">This permanently removes the ingredient from your pantry.</string>
     <string name="invalid_name">Enter an ingredient name</string>
     <string name="invalid_quantity">Enter a positive quantity, up to 1,000,000</string>
     <string name="invalid_date">Use a valid date in YYYY-MM-DD format</string>
-    <string name="saved">Ingredient saved for this session</string>
-    <string name="missing_item">This preview item is no longer available</string>
+    <string name="saved">Ingredient saved</string>
+    <string name="deleted">Ingredient deleted</string>
+    <string name="database_error">Could not access your pantry. Please try again.</string>
+    <string name="missing_item">This ingredient is no longer available</string>
     <string name="count">%1$d ingredients in your pantry</string>
     <string name="edit_accessibility">Edit %1$s</string>
     <string name="units_label">Preferred units</string>

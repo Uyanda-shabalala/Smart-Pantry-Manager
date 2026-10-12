@@ -1,5 +1,8 @@
 package com.example.smartpantrymanager;
 import android.os.Bundle;
+import android.database.sqlite.SQLiteException;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.Spinner;
@@ -13,15 +16,44 @@ public class IngredientActivity extends BaseActivity {
     private long id;
     private EditText name,quantity,expiry;
     private Spinner unit;
+    private DBHelper dbHelper;
+    private final ExecutorService databaseExecutor = Executors.newSingleThreadExecutor();
     protected void onCreate(Bundle state) {
         super.onCreate(state);
+        dbHelper = new DBHelper(this);
         showScreen(R.layout.activity_ingredient,0,true);
         name=findViewById(R.id.ingredientName);
         quantity=findViewById(R.id.quantity);
         expiry=findViewById(R.id.expiry);
         unit=findViewById(R.id.unit);
         id=getIntent().getLongExtra(EXTRA_ID,-1);
-        PreviewStore.Ingredient item=PreviewStore.find(id);
+        findViewById(R.id.cancel).setOnClickListener(v -> finish());
+        findViewById(R.id.save).setOnClickListener(v -> save());
+        findViewById(R.id.delete).setOnClickListener(v -> new AlertDialog.Builder(this)
+                .setTitle(R.string.delete_title).setMessage(R.string.delete_message)
+                .setNegativeButton(R.string.cancel,null)
+                .setPositiveButton(R.string.delete,(d,w) -> deleteIngredient()).show());
+        setBusy(true);
+        databaseExecutor.execute(() -> {
+            try {
+                Ingredient item = id == -1 ? null : dbHelper.getIngredient(id);
+                runOnUiThread(() -> {
+                    if (isFinishing() || isDestroyed()) return;
+                    populate(item, state);
+                    setBusy(false);
+                });
+            } catch (SQLiteException ex) {
+                runOnUiThread(() -> {
+                    if (isFinishing() || isDestroyed()) return;
+                    Toast.makeText(this,R.string.database_error,Toast.LENGTH_LONG).show();
+                    finish();
+                });
+            }
+        });
+    }
+
+    private void populate(Ingredient item, Bundle state) {
+
         if(id!=-1 && item==null) {
             Toast.makeText(this,R.string.missing_item,Toast.LENGTH_LONG).show();
             finish();
@@ -38,11 +70,6 @@ public class IngredientActivity extends BaseActivity {
                 for(int i=0;i<units.length;i++) if(units[i].equals(item.unit)) unit.setSelection(i);
             }
         }
-        findViewById(R.id.save).setOnClickListener(v -> save());
-        findViewById(R.id.delete).setOnClickListener(v -> new AlertDialog.Builder(this).setTitle(R.string.delete_title).setMessage(R.string.delete_message).setNegativeButton(R.string.cancel,null).setPositiveButton(R.string.delete,(d,w) -> {
-            PreviewStore.items.remove(PreviewStore.find(id)); finish();
-        }
-        ).show());
     }
     private void save() {
         String n=name.getText().toString().trim(), e=expiry.getText().toString().trim();
@@ -71,20 +98,58 @@ public class IngredientActivity extends BaseActivity {
             return;
         }
         String u=unit.getSelectedItem().toString();
-        if(id==-1) PreviewStore.add(n,q,u,e);
-        else {
-            PreviewStore.Ingredient item=PreviewStore.find(id);
-            if(item==null) {
-                Toast.makeText(this,R.string.missing_item,Toast.LENGTH_LONG).show();
-                finish();
-                return;
+        final double amount = q;
+        setBusy(true);
+        databaseExecutor.execute(() -> {
+            try {
+                boolean saved;
+                if (id == -1) {
+                    dbHelper.addIngredient(n,amount,u,e);
+                    saved = true;
+                } else saved = dbHelper.updateIngredient(id,n,amount,u,e);
+                completeWrite(saved ? R.string.saved : R.string.missing_item);
+            } catch (SQLiteException ex) {
+                showDatabaseError();
             }
-            item.name=n;
-            item.quantity=q;
-            item.unit=u;
-            item.expiry=e;
-        }
-        Toast.makeText(this,R.string.saved,Toast.LENGTH_SHORT).show();
-        finish();
+        });
+    }
+
+    private void deleteIngredient() {
+        setBusy(true);
+        databaseExecutor.execute(() -> {
+            try {
+                completeWrite(dbHelper.deleteIngredient(id) ? R.string.deleted : R.string.missing_item);
+            } catch (SQLiteException ex) {
+                showDatabaseError();
+            }
+        });
+    }
+
+    private void completeWrite(int message) {
+        runOnUiThread(() -> {
+            if (isFinishing() || isDestroyed()) return;
+            Toast.makeText(this,message,Toast.LENGTH_SHORT).show();
+            finish();
+        });
+    }
+
+    private void showDatabaseError() {
+        runOnUiThread(() -> {
+            if (isFinishing() || isDestroyed()) return;
+            setBusy(false);
+            Toast.makeText(this,R.string.database_error,Toast.LENGTH_LONG).show();
+        });
+    }
+
+    private void setBusy(boolean busy) {
+        findViewById(R.id.save).setEnabled(!busy);
+        findViewById(R.id.delete).setEnabled(!busy);
+    }
+
+    @Override
+    protected void onDestroy() {
+        databaseExecutor.execute(() -> dbHelper.close());
+        databaseExecutor.shutdown();
+        super.onDestroy();
     }
 }
