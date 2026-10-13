@@ -1,0 +1,17 @@
+<?xml version="1.0" ?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android" android:layout_width="match_parent" android:layout_height="match_parent" android:fillViewport="true">
+    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android" android:layout_width="match_parent" android:layout_height="match_parent" android:orientation="vertical" android:padding="24dp">
+        <TextView style="@style/Title" android:text="@string/add_title" android:id="@+id/formTitle"/>
+        <TextView style="@style/Body" android:text="@string/form_note"/>
+        <TextView style="@style/Body" android:text="@string/name" android:labelFor="@+id/ingredientName" android:layout_marginBottom="4dp"/>
+        <EditText android:id="@+id/ingredientName" android:layout_width="match_parent" android:layout_height="wrap_content" android:minHeight="56dp" android:layout_marginBottom="16dp" android:inputType="textCapWords" android:maxLength="80"/>
+        <TextView style="@style/Body" android:text="@string/quantity" android:labelFor="@+id/quantity" android:layout_marginBottom="4dp"/>
+        <EditText android:id="@+id/quantity" android:layout_width="match_parent" android:layout_height="wrap_content" android:minHeight="56dp" android:layout_marginBottom="16dp" android:inputType="numberDecimal" android:maxLength="80"/>
+        <TextView style="@style/Body" android:text="@string/unit" android:labelFor="@+id/unit"/>
+        <Spinner android:id="@+id/unit" android:layout_width="match_parent" android:layout_height="56dp" android:entries="@array/units"/>
+        <TextView style="@style/Body" android:text="@string/expiry" android:labelFor="@+id/expiry" android:layout_marginBottom="4dp"/>
+        <EditText android:id="@+id/expiry" android:layout_width="match_parent" android:layout_height="wrap_content" android:minHeight="56dp" android:layout_marginBottom="16dp" android:inputType="date" android:maxLength="80" android:hint="@string/expiry_hint"/>
+        <com.google.android.material.button.MaterialButton android:id="@+id/save" android:layout_width="match_parent" android:layout_height="wrap_content" android:minHeight="52dp" android:text="@string/save"/>
+        <com.google.android.material.button.MaterialButton android:id="@+id/delete" android:layout_width="match_parent" android:layout_height="wrap_content" android:minHeight="52dp" android:text="@string/delete"/>
+    </LinearLayout>
+</ScrollView>
