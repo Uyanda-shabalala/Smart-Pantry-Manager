@@ -1,0 +1,9 @@
+<?xml version="1.0" ?>
+<resources>
+    <color name="sage">#365D47</color>
+    <color name="cream">#FAF8F1</color>
+    <color name="ink">#23352B</color>
+    <color name="muted">#526258</color>
+    <color name="soft">#E5EDDF</color>
+    <color name="white">#FFFFFF</color>
+</resources>

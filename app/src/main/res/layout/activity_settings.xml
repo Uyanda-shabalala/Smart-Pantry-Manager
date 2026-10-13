@@ -1,0 +1,12 @@
+<?xml version="1.0" ?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android" android:layout_width="match_parent" android:layout_height="match_parent" android:fillViewport="true">
+    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android" android:layout_width="match_parent" android:layout_height="match_parent" android:orientation="vertical" android:padding="24dp">
+        <TextView style="@style/Title" android:text="@string/settings_title"/>
+        <TextView style="@style/Body" android:text="@string/settings_subtitle"/>
+        <com.google.android.material.switchmaterial.SwitchMaterial android:id="@+id/alerts" android:layout_width="match_parent" android:layout_height="wrap_content" android:minHeight="56dp" android:text="@string/alerts"/>
+        <TextView style="@style/Section" android:text="@string/units_label" android:labelFor="@+id/preference"/>
+        <Spinner android:id="@+id/preference" android:layout_width="match_parent" android:layout_height="56dp" android:entries="@array/preferences"/>
+        <TextView style="@style/Body" android:text="@string/settings_note"/>
+        <TextView style="@style/Section" android:text="@string/brand"/>
+    </LinearLayout>
+</ScrollView>
