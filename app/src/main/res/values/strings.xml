@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <string name="recipe_info">%1$d min • %2$d servings</string>
     <string name="app_name">Smart Pantry</string>
     <string name="demo">UI preview • Changes last for this session only</string>
     <string name="pantry">My pantry</string>

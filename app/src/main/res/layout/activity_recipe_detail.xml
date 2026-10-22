@@ -56,9 +56,9 @@
                     android:contentDescription="@null" />
 
                 <TextView
+                    android:id="@+id/recipeInfo"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="20 min  •  2 servings"
                     android:textColor="@color/muted"
                     android:textSize="14sp" />
             </LinearLayout>

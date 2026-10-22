@@ -9,10 +9,10 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
-/** Persistent ingredient CRUD. Call these methods on a background thread. */
+/** Persistent pantry and recipe storage. Call these methods on a background thread. */
 public final class DBHelper extends SQLiteOpenHelper {
     private static final String DATABASE_NAME = "smart_pantry.db";
-    private static final int DATABASE_VERSION = 1;
+    private static final int DATABASE_VERSION = 2;
     private static final String TABLE = "ingredients";
     private static final String[] COLUMNS = {"_id", "name", "quantity", "unit", "expiry"};
 
@@ -26,6 +26,11 @@ public final class DBHelper extends SQLiteOpenHelper {
     }
 
     @Override
+    public void onConfigure(SQLiteDatabase db) {
+        db.setForeignKeyConstraintsEnabled(true);
+    }
+
+    @Override
     public void onCreate(SQLiteDatabase db) {
         db.execSQL("CREATE TABLE " + TABLE + " ("
                 + "_id INTEGER PRIMARY KEY AUTOINCREMENT, "
@@ -33,12 +38,72 @@ public final class DBHelper extends SQLiteOpenHelper {
                 + "quantity REAL NOT NULL CHECK(quantity > 0 AND quantity <= 1000000), "
                 + "unit TEXT NOT NULL CHECK(length(trim(unit)) > 0), "
                 + "expiry TEXT NOT NULL DEFAULT '')");
+        createRecipes(db);
     }
 
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
-        // Add explicit, data-preserving migrations when incrementing DATABASE_VERSION.
-        throw new IllegalStateException("Missing database migration: " + oldVersion + " to " + newVersion);
+        if (oldVersion == 1 && newVersion == 2) {
+            createRecipes(db);
+        } else {
+            throw new IllegalStateException("Missing database migration: " + oldVersion + " to " + newVersion);
+        }
+    }
+
+    // SQLiteOpenHelper runs creation/upgrades in a transaction, including all seed inserts.
+    private static void createRecipes(SQLiteDatabase db) {
+        db.execSQL("CREATE TABLE recipes (_id INTEGER PRIMARY KEY AUTOINCREMENT, "
+                + "name TEXT NOT NULL UNIQUE CHECK(length(trim(name)) > 0), "
+                + "minutes INTEGER NOT NULL CHECK(minutes > 0), "
+                + "servings INTEGER NOT NULL CHECK(servings > 0))");
+        db.execSQL("CREATE TABLE recipe_ingredients (recipe_id INTEGER NOT NULL "
+                + "REFERENCES recipes(_id) ON DELETE CASCADE, position INTEGER NOT NULL CHECK(position > 0), "
+                + "name TEXT NOT NULL CHECK(length(trim(name)) > 0), "
+                + "quantity REAL NOT NULL CHECK(quantity > 0), "
+                + "unit TEXT NOT NULL CHECK(unit IN ('g', 'ml', 'pcs')), "
+                + "PRIMARY KEY(recipe_id, position))");
+        db.execSQL("CREATE TABLE recipe_steps (recipe_id INTEGER NOT NULL "
+                + "REFERENCES recipes(_id) ON DELETE CASCADE, position INTEGER NOT NULL CHECK(position > 0), "
+                + "instruction TEXT NOT NULL CHECK(length(trim(instruction)) > 0), "
+                + "PRIMARY KEY(recipe_id, position))");
+        RecipeSeeds.insertInto(db);
+    }
+
+    public List<Recipe> getAllRecipes() {
+        List<Recipe> recipes = new ArrayList<>();
+        try (Cursor cursor = getReadableDatabase().query("recipes", null, null, null,
+                null, null, "_id ASC")) {
+            while (cursor.moveToNext()) recipes.add(readRecipe(cursor));
+        }
+        return recipes;
+    }
+
+    /** Returns null for an unknown recipe ID. */
+    public Recipe getRecipe(long id) {
+        try (Cursor cursor = getReadableDatabase().query("recipes", null, "_id = ?",
+                new String[]{String.valueOf(id)}, null, null, null)) {
+            return cursor.moveToFirst() ? readRecipe(cursor) : null;
+        }
+    }
+
+    private Recipe readRecipe(Cursor cursor) {
+        long id = cursor.getLong(cursor.getColumnIndexOrThrow("_id"));
+        List<Recipe.Requirement> requirements = new ArrayList<>();
+        List<String> steps = new ArrayList<>();
+        String[] args = {String.valueOf(id)};
+        try (Cursor items = getReadableDatabase().query("recipe_ingredients",
+                new String[]{"name", "quantity", "unit"}, "recipe_id = ?", args,
+                null, null, "position ASC")) {
+            while (items.moveToNext()) requirements.add(new Recipe.Requirement(
+                    items.getString(0), items.getDouble(1), items.getString(2)));
+        }
+        try (Cursor items = getReadableDatabase().query("recipe_steps",
+                new String[]{"instruction"}, "recipe_id = ?", args, null, null, "position ASC")) {
+            while (items.moveToNext()) steps.add(items.getString(0));
+        }
+        return new Recipe(id, cursor.getString(cursor.getColumnIndexOrThrow("name")),
+                cursor.getInt(cursor.getColumnIndexOrThrow("minutes")),
+                cursor.getInt(cursor.getColumnIndexOrThrow("servings")), requirements, steps);
     }
 
     /** Create an ingredient and return its generated ID; throws if saving fails. */
