@@ -15,6 +15,8 @@ public class RecipesActivity extends BaseActivity {
     private DBHelper dbHelper;
     private final ExecutorService databaseExecutor = Executors.newSingleThreadExecutor();
     private List<Recipe> recipes = new ArrayList<>();
+    private List<Ingredient> pantryIngredients = new ArrayList<>();
+
     protected void onCreate(Bundle state) {
         super.onCreate(state);
         dbHelper = new DBHelper(this);
@@ -26,9 +28,11 @@ public class RecipesActivity extends BaseActivity {
         databaseExecutor.execute(() -> {
             try {
                 List<Recipe> loaded = dbHelper.getAllRecipes();
+                List<Ingredient> loadedPantry = dbHelper.getAllIngredients();
                 runOnUiThread(() -> {
                     if (isFinishing() || isDestroyed()) return;
                     recipes = loaded;
+                    pantryIngredients = loadedPantry;
                     display(samples.isChecked());
                 });
             } catch (SQLiteException ex) {
@@ -45,10 +49,37 @@ public class RecipesActivity extends BaseActivity {
     }
     private void display(boolean show) {
         ArrayList<CardAdapter.Row> rows=new ArrayList<>();
+
+
         if(show) for(Recipe recipe : recipes) {
-            rows.add(new CardAdapter.Row(recipe.name, getString(R.string.recipe_info, recipe.minutes, recipe.servings),
-                    () -> startActivity(new Intent(this,RecipeDetailActivity.class)
-                            .putExtra(RecipeDetailActivity.EXTRA_RECIPE, recipe.id))));
+
+            // Show the recipe only when pantry quantity >= required quantity for every ingredient.
+            // Match ingredients by name and unit, adding quantities across matching pantry entries.
+
+            boolean canMake=true;
+            for (Recipe.Requirement requiredIngredient: recipe.ingredients) {
+
+                   double availableQuantity = 0;
+
+                   for (Ingredient pantryItem : pantryIngredients){
+
+                       if (requiredIngredient.name.equalsIgnoreCase(pantryItem.name)&& requiredIngredient.unit.equalsIgnoreCase(pantryItem.unit)){
+                           availableQuantity+=pantryItem.quantity;
+                       }
+                   }
+
+                   if (availableQuantity<requiredIngredient.quantity){
+                       canMake=false;
+                       break;
+                   }
+
+            }
+            if (canMake){
+                rows.add(new CardAdapter.Row(recipe.name, getString(R.string.recipe_info, recipe.minutes, recipe.servings),
+                        () -> startActivity(new Intent(this,RecipeDetailActivity.class)
+                                .putExtra(RecipeDetailActivity.EXTRA_RECIPE, recipe.id))));
+            }
+
         }
         RecyclerView list=findViewById(R.id.list);
         list.setLayoutManager(new LinearLayoutManager(this));

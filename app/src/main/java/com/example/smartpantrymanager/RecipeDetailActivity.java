@@ -21,7 +21,9 @@ public class RecipeDetailActivity extends BaseActivity {
         databaseExecutor.execute(() -> {
             try {
                 Recipe recipe = dbHelper.getRecipe(id);
+
                 runOnUiThread(() -> {
+
                     if (isFinishing() || isDestroyed()) return;
                     if (recipe == null) { finish(); return; }
                     ((TextView)findViewById(R.id.recipeTitle)).setText(recipe.name);
