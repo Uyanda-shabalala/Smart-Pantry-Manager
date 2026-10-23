@@ -53,17 +53,19 @@ public class RecipesActivity extends BaseActivity {
 
         if(show) for(Recipe recipe : recipes) {
 
-            // Show the recipe only when pantry quantity >= required quantity for every ingredient.
-            // Match ingredients by name and unit, adding quantities across matching pantry entries.
+            // check if the pantry has enough of each ingredient , if it does add the recipe to the card.
 
             boolean canMake=true;
             for (Recipe.Requirement requiredIngredient: recipe.ingredients) {
 
+                   // clean up both names so plurals and extra spaces do not stop them from matching.
+                   String requiredName = normalizeIngredientName(requiredIngredient.name);
                    double availableQuantity = 0;
 
                    for (Ingredient pantryItem : pantryIngredients){
 
-                       if (requiredIngredient.name.equalsIgnoreCase(pantryItem.name)&& requiredIngredient.unit.equalsIgnoreCase(pantryItem.unit)){
+                       String pantryName = normalizeIngredientName(pantryItem.name);
+                       if (requiredName.equals(pantryName)&& requiredIngredient.unit.equalsIgnoreCase(pantryItem.unit)){
                            availableQuantity+=pantryItem.quantity;
                        }
                    }
@@ -86,6 +88,56 @@ public class RecipesActivity extends BaseActivity {
         list.setAdapter(new CardAdapter(rows));
         findViewById(R.id.empty).setVisibility(rows.isEmpty()?View.VISIBLE:View.GONE);
         findViewById(R.id.emptyPreview).setVisibility(rows.isEmpty()?View.VISIBLE:View.GONE);
+    }
+
+    private String normalizeIngredientName(String name) {
+        // remove extra spaces and make the name lowercase before checking the plural.
+        String normalized = name.trim()
+                .toLowerCase(java.util.Locale.ROOT)
+                .replaceAll("\\s+", " ");
+
+        // only check the last word so burger patties becomes burger patty.
+        int lastSpace = normalized.lastIndexOf(' ');
+        String prefix = normalized.substring(0, lastSpace + 1);
+        String word = normalized.substring(lastSpace + 1);
+
+        // handle common plurals that do not fit the general rules.
+        switch (word) {
+            case "tomatoes": word = "tomato"; break;
+            case "potatoes": word = "potato"; break;
+            case "cookies": word = "cookie"; break;
+            case "brownies": word = "brownie"; break;
+            case "leaves": word = "leaf"; break;
+            case "loaves": word = "loaf"; break;
+
+            // these names should stay as they are.
+            case "oats":
+            case "couscous":
+            case "asparagus":
+            case "molasses":
+            case "hummus":
+                break;
+
+            default:
+                // for other names , use common endings to get the singular.
+                if (word.length() > 3 && word.endsWith("ies")) {
+                    word = word.substring(0, word.length() - 3) + "y";
+                } else if (word.endsWith("ches")
+                        || word.endsWith("shes")
+                        || word.endsWith("sses")
+                        || word.endsWith("xes")
+                        || word.endsWith("zzes")) {
+                    word = word.substring(0, word.length() - 2);
+                } else if (word.length() > 3
+                        && word.endsWith("s")
+                        && !word.endsWith("ss")
+                        && !word.endsWith("us")
+                        && !word.endsWith("is")) {
+                    word = word.substring(0, word.length() - 1);
+                }
+        }
+
+        return prefix + word;
     }
 
     @Override
