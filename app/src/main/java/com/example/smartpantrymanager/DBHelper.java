@@ -9,7 +9,7 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
-/** Persistent pantry and recipe storage. Call these methods on a background thread. */
+// store the pantry and recipes here , run database work in the background so the screen does not freeze.
 public final class DBHelper extends SQLiteOpenHelper {
     private static final String DATABASE_NAME = "smart_pantry.db";
     private static final int DATABASE_VERSION = 2;
@@ -17,12 +17,7 @@ public final class DBHelper extends SQLiteOpenHelper {
     private static final String[] COLUMNS = {"_id", "name", "quantity", "unit", "expiry"};
 
     public DBHelper(Context context) {
-        this(context, DATABASE_NAME);
-    }
-
-    // Allows instrumented tests to use a separate database.
-    DBHelper(Context context, String databaseName) {
-        super(context.getApplicationContext(), databaseName, null, DATABASE_VERSION);
+        super(context.getApplicationContext(), DATABASE_NAME, null, DATABASE_VERSION);
     }
 
     @Override
@@ -50,7 +45,7 @@ public final class DBHelper extends SQLiteOpenHelper {
         }
     }
 
-    // SQLiteOpenHelper runs creation/upgrades in a transaction, including all seed inserts.
+    // create the tables and add the recipes in one transaction , if something fails roll the changes back.
     private static void createRecipes(SQLiteDatabase db) {
         db.execSQL("CREATE TABLE recipes (_id INTEGER PRIMARY KEY AUTOINCREMENT, "
                 + "name TEXT NOT NULL UNIQUE CHECK(length(trim(name)) > 0), "
@@ -78,7 +73,7 @@ public final class DBHelper extends SQLiteOpenHelper {
         return recipes;
     }
 
-    /** Returns null for an unknown recipe ID. */
+    // find the recipe by its id , return null if it is not in the database.
     public Recipe getRecipe(long id) {
         try (Cursor cursor = getReadableDatabase().query("recipes", null, "_id = ?",
                 new String[]{String.valueOf(id)}, null, null, null)) {
@@ -106,12 +101,12 @@ public final class DBHelper extends SQLiteOpenHelper {
                 cursor.getInt(cursor.getColumnIndexOrThrow("servings")), requirements, steps);
     }
 
-    /** Create an ingredient and return its generated ID; throws if saving fails. */
+    // add the ingredient and return its new id , report an error if it cannot be saved.
     public long addIngredient(String name, double quantity, String unit, String expiry) {
         return getWritableDatabase().insertOrThrow(TABLE, null, values(name, quantity, unit, expiry));
     }
 
-    /** Read one ingredient, or null when its ID does not exist. */
+    // get the selected ingredient , return null if it has already been removed.
     public Ingredient getIngredient(long id) {
         try (Cursor cursor = getReadableDatabase().query(TABLE, COLUMNS, "_id = ?",
                 new String[]{String.valueOf(id)}, null, null, null)) {
@@ -119,7 +114,7 @@ public final class DBHelper extends SQLiteOpenHelper {
         }
     }
 
-    /** Read all ingredients in insertion order. An empty pantry returns an empty list. */
+    // get all pantry ingredients in the order they were added , an empty pantry gives an empty list.
     public List<Ingredient> getAllIngredients() {
         List<Ingredient> ingredients = new ArrayList<>();
         try (Cursor cursor = getReadableDatabase().query(TABLE, COLUMNS, null, null,
@@ -129,13 +124,13 @@ public final class DBHelper extends SQLiteOpenHelper {
         return ingredients;
     }
 
-    /** Update an existing ingredient; returns false if the ID no longer exists. */
+    // update only the ingredient with this id , return false if it is no longer there.
     public boolean updateIngredient(long id, String name, double quantity, String unit, String expiry) {
         return getWritableDatabase().update(TABLE, values(name, quantity, unit, expiry),
                 "_id = ?", new String[]{String.valueOf(id)}) == 1;
     }
 
-    /** Delete one ingredient; returns false if the ID no longer exists. */
+    // delete only the ingredient with this id , return false if it is no longer there.
     public boolean deleteIngredient(long id) {
         return getWritableDatabase().delete(TABLE, "_id = ?",
                 new String[]{String.valueOf(id)}) == 1;

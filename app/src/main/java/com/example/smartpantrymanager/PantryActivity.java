@@ -10,7 +10,7 @@ import java.util.concurrent.Executors;
 import android.widget.TextView;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.recyclerview.widget.LinearLayoutManager;
-import java.text.DecimalFormat;
+import java.time.LocalDate;
 import java.util.ArrayList;
 public class PantryActivity extends BaseActivity {
 
@@ -52,7 +52,19 @@ public class PantryActivity extends BaseActivity {
 
     private void display(List<Ingredient> items) {
         ArrayList<CardAdapter.Row> rows=new ArrayList<>();
-        for(Ingredient item:items) rows.add(new CardAdapter.Row(item.name,new DecimalFormat("0.###").format(item.quantity)+" "+item.unit+(item.expiry.isEmpty()?"":" • "+item.expiry),() -> startActivity(new Intent(this,IngredientActivity.class).putExtra(IngredientActivity.EXTRA_ID,item.id))));
+        boolean metric = AppSettings.unitsPreference(this) == 0;
+        for (Ingredient item : items) {
+            String amount = IngredientUnits.display(item.quantity, item.unit, metric);
+            rows.add(new CardAdapter.Row(item.name,
+                    amount + (item.expiry.isEmpty() ? "" : " \u2022 " + item.expiry),
+                    () -> startActivity(new Intent(this, IngredientActivity.class)
+                            .putExtra(IngredientActivity.EXTRA_ID, item.id))));
+        }
+        // use the real dates and saved setting instead of showing a fixed expiry count.
+        int dueSoon = ExpirySummary.dueSoon(items, LocalDate.now());
+        TextView summary = findViewById(R.id.expirySummary);
+        summary.setText(getResources().getQuantityString(R.plurals.expiry_summary, dueSoon, dueSoon));
+        summary.setVisibility(AppSettings.showExpirySummary(this) && dueSoon > 0 ? View.VISIBLE : View.GONE);
         RecyclerView list=findViewById(R.id.list);
         list.setLayoutManager(new LinearLayoutManager(this));
         list.setAdapter(new CardAdapter(rows));

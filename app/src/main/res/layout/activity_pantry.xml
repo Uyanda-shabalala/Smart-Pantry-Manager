@@ -29,115 +29,16 @@
             style="@style/Body"
             android:text="@string/pantry_subtitle" />
 
-        <!-- Search Bar -->
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="50dp"
-            android:layout_marginBottom="16dp"
-            android:background="@drawable/bg_edittext"
-            android:gravity="center_vertical"
-            android:paddingHorizontal="16dp">
-
-            <ImageView
-                android:layout_width="20dp"
-                android:layout_height="20dp"
-                android:layout_marginEnd="12dp"
-                android:src="@drawable/ic_search"
-                android:contentDescription="@null" />
-
-            <TextView
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:text="@string/search_hint"
-                android:textColor="@color/muted"
-                android:textSize="15sp" />
-        </LinearLayout>
-
-        <!-- Filter Chips Row -->
-        <HorizontalScrollView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="16dp"
-            android:scrollbars="none">
-
-            <LinearLayout
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal">
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="36dp"
-                    android:layout_marginEnd="8dp"
-                    android:background="@drawable/bg_chip_selected"
-                    android:gravity="center"
-                    android:paddingHorizontal="20dp"
-                    android:text="@string/chip_all"
-                    android:textColor="@color/white"
-                    android:textSize="14sp"
-                    android:textStyle="bold" />
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="36dp"
-                    android:layout_marginEnd="8dp"
-                    android:background="@drawable/bg_chip_unselected"
-                    android:gravity="center"
-                    android:paddingHorizontal="16dp"
-                    android:text="@string/chip_use_soon"
-                    android:textColor="@color/ink"
-                    android:textSize="14sp" />
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="36dp"
-                    android:background="@drawable/bg_chip_unselected"
-                    android:gravity="center"
-                    android:paddingHorizontal="16dp"
-                    android:text="@string/chip_vegetables"
-                    android:textColor="@color/ink"
-                    android:textSize="14sp" />
-            </LinearLayout>
-        </HorizontalScrollView>
-
-        <!-- Alert Banner -->
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="20dp"
+        <TextView
+            android:id="@+id/expirySummary"
+            style="@style/Body"
             android:background="@drawable/bg_card_mint"
-            android:gravity="center_vertical"
-            android:paddingHorizontal="16dp"
-            android:paddingVertical="14dp">
-
-            <ImageView
-                android:layout_width="20dp"
-                android:layout_height="20dp"
-                android:layout_marginEnd="12dp"
-                android:src="@drawable/ic_clock"
-                android:contentDescription="@null" />
-
-            <TextView
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:text="@string/banner_use_soon"
-                android:textColor="@color/ink"
-                android:textSize="15sp"
-                android:textStyle="bold" />
-
-            <ImageView
-                android:layout_width="20dp"
-                android:layout_height="20dp"
-                android:src="@drawable/ic_chevron_right"
-                android:contentDescription="@null" />
-        </LinearLayout>
+            android:padding="16dp"
+            android:visibility="gone" />
 
         <TextView
             android:id="@+id/count"
-            style="@style/Section"
-            android:visibility="gone" />
+            style="@style/Section" />
 
         <TextView
             android:id="@+id/empty"

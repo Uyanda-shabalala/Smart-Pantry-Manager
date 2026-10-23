@@ -9,13 +9,13 @@ public class SettingsActivity extends BaseActivity {
         super.onCreate(state);
         showScreen(R.layout.activity_settings,R.id.nav_settings,false);
         SwitchMaterial alerts=findViewById(R.id.alerts);
-        alerts.setChecked(PreviewStore.alerts);
-        alerts.setOnCheckedChangeListener((b,value) -> PreviewStore.alerts=value);
+        alerts.setChecked(AppSettings.showExpirySummary(this));
+        alerts.setOnCheckedChangeListener((b,value) -> AppSettings.setExpirySummary(this, value));
         Spinner units=findViewById(R.id.preference);
-        units.setSelection(PreviewStore.unitsPreference);
+        units.setSelection(AppSettings.unitsPreference(this));
         units.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             public void onItemSelected(AdapterView<?> p,View v,int position,long id) {
-                PreviewStore.unitsPreference=position;
+                AppSettings.setUnitsPreference(SettingsActivity.this, position);
             }
             public void onNothingSelected(AdapterView<?> p) {
             }

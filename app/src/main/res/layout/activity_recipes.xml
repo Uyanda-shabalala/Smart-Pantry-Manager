@@ -29,24 +29,6 @@
             style="@style/Body"
             android:text="@string/recipe_subtitle" />
 
-        <com.google.android.material.switchmaterial.SwitchMaterial
-            android:id="@+id/samples"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="16dp"
-            android:minHeight="48dp"
-            android:text="@string/sample_toggle"
-            android:textColor="@color/ink"
-            android:textSize="15sp"
-            android:checked="true"
-            app:useMaterialThemeColors="true" />
-
-        <TextView
-            android:id="@+id/emptyPreview"
-            style="@style/Body"
-            android:text="@string/empty_preview"
-            android:visibility="gone" />
-
         <TextView
             android:id="@+id/empty"
             style="@style/Body"

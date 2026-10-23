@@ -1,6 +1,6 @@
 package com.example.smartpantrymanager;
 
-/** One ingredient stored in the pantry database. */
+// hold the name , quantity , unit and expiry date for one pantry ingredient.
 public final class Ingredient {
     public final long id;
     public final String name, unit, expiry;

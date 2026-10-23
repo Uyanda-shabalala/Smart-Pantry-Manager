@@ -3,7 +3,7 @@ package com.example.smartpantrymanager;
 import android.content.ContentValues;
 import android.database.sqlite.SQLiteDatabase;
 
-/** Initial catalog. Only invoked when the recipe schema is first installed. */
+// add the starting recipes when the recipe tables are first created , do not add them again on every launch.
 final class RecipeSeeds {
     private RecipeSeeds() {}
 

@@ -5,7 +5,7 @@ import java.util.Collections;
 import java.util.List;
 import java.text.DecimalFormat;
 
-/** A stored recipe with ordered requirements and preparation steps. */
+// hold the recipe details , its ingredients and the steps in the order they should be followed.
 public final class Recipe {
     public final long id;
     public final String name;

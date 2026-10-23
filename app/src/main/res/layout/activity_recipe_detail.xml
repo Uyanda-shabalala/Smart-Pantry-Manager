@@ -11,7 +11,7 @@
         android:layout_height="wrap_content"
         android:orientation="vertical">
 
-        <!-- Top Hero Card / Banner -->
+        <!-- show the recipe illustration above the details. -->
         <FrameLayout
             android:layout_width="match_parent"
             android:layout_height="200dp"
@@ -26,7 +26,6 @@
                 android:contentDescription="@null" />
         </FrameLayout>
 
-        <!-- Recipe Content Card -->
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -40,7 +39,6 @@
                 style="@style/Title"
                 android:textSize="26sp" />
 
-            <!-- Time & Servings Meta Info -->
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
