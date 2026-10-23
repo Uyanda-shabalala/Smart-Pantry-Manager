@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.core.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:fillViewport="true"
+    android:background="@color/cream">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:paddingHorizontal="20dp"
+        android:paddingTop="12dp"
+        android:paddingBottom="24dp">
+
+        <ImageView
+            android:layout_width="28dp"
+            android:layout_height="28dp"
+            android:layout_marginBottom="12dp"
+            android:src="@drawable/ic_leaf"
+            android:contentDescription="@null" />
+
+        <TextView
+            style="@style/Title"
+            android:text="@string/recipe_title" />
+
+        <TextView
+            style="@style/Body"
+            android:text="@string/recipe_subtitle" />
+
+        <com.google.android.material.switchmaterial.SwitchMaterial
+            android:id="@+id/samples"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="16dp"
+            android:minHeight="48dp"
+            android:text="@string/sample_toggle"
+            android:textColor="@color/ink"
+            android:textSize="15sp"
+            android:checked="true"
+            app:useMaterialThemeColors="true" />
+
+        <TextView
+            android:id="@+id/emptyPreview"
+            style="@style/Body"
+            android:text="@string/empty_preview"
+            android:visibility="gone" />
+
+        <TextView
+            android:id="@+id/empty"
+            style="@style/Body"
+            android:text="@string/no_matches"
+            android:visibility="gone" />
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/list"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:nestedScrollingEnabled="false" />
+
+    </LinearLayout>
+</androidx.core.widget.NestedScrollView>
